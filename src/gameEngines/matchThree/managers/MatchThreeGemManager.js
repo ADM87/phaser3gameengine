@@ -231,10 +231,8 @@ const MatchThreeGemManager = new Phaser.Class({
 
                     dropPos.y -= (bottom - this.dropMap[column][index].row) * this.engine.matrix.cellSize;
 
-                    this.activeGems[column][row].awake({ column: column, row: row, type: this.getNewGemType(column, row, false) });
+                    this.activeGems[column][row].awake({ column: column, row: row });
                     this.activeGems[column][row].setPosition(dropPos.x, dropPos.y);
-
-                    this.dropMap[column].splice(index, 1);
                 }
                 else {
                     this.activeGems[column][row].setCell(column, row);
@@ -242,6 +240,9 @@ const MatchThreeGemManager = new Phaser.Class({
 
                 cascadeList.push(this.activeGems[column][row]);
              }
+
+             this.dropMap[column].forEach(gem => gem.assignType(this.getNewGemType(gem.column, gem.row, false)));
+             this.dropMap[column] = [];
 
              const cascadeData = {
                 gems: cascadeList

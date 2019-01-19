@@ -17,7 +17,7 @@ const MatchThreeGem = new Phaser.Class({
         function(config) {
             this.setScale(1);
 
-            this.assignType(config.type);
+            this.assignType(config.type || this.type);
             this.setCell(config.column, config.row);
 
             const pos = this.engine.matrix.getCell(this.column, this.row).getCenter();
