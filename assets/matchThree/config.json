@@ -1,0 +1,36 @@
+{
+    "Matrix": {
+        "position": { "x": 225, "y": 125 },
+        "columns": 7,
+        "rows": 7,
+        "cellSize": 50
+    },
+    "GemManager": {
+        "types": {
+            "blue": { "key": "blueGem" },
+            "yellow": { "key": "yellowGem" },
+            "green": { "key": "greenGem" },
+            "red": { "key": "redGem" }
+        },
+        "swapConfig": {
+            "duration": 150,
+            "ease": "Linear"
+        },
+        "matchConfig": {
+            "sequenceDelay": 120,
+            "duration": 250,
+            "ease": "Back.easeIn"
+        },
+        "cascadeConfig": {
+            "sequenceDelay": 60,
+            "duration": 500,
+            "ease": "Quad.easeOut"
+        },
+        "dropHeight": 0
+    },
+    "Selecter": {
+        "size": 45,
+        "idleColor": "0x00ff00",
+        "actionColor": "0xff0000"
+    }
+}
