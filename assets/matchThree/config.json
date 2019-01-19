@@ -24,9 +24,9 @@
         "cascadeConfig": {
             "sequenceDelay": 60,
             "duration": 500,
-            "ease": "Quad.easeOut"
+            "ease": "Back.easeOut"
         },
-        "dropHeight": 0
+        "addMatrixMask": true
     },
     "Selecter": {
         "size": 45,

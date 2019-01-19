@@ -23,6 +23,11 @@ const MatchThreeMatrix = new Phaser.Class({
             }
         },
 
+    getBounds:
+        function() {
+            return { x: this.position.x, y: this.position.y, width: this.columns * this.cellSize, height: this.rows * this.cellSize };
+        },
+
     addLock:
         function(column, row, lock) {
             const cell = this.getCell(column, row);

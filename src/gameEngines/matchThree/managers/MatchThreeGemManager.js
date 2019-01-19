@@ -10,8 +10,17 @@ const MatchThreeGemManager = new Phaser.Class({
             this.swapConfig = config.swapConfig || {};
             this.matchConfig = config.matchConfig || {};
             this.cascadeConfig = config.cascadeConfig || {};
-            this.dropHeight = config.dropHeight || 0;
+            this.addMatrixMask = config.addMatrixMask || false;
+            this.gemContainer = this.engine.gameScene.add.container();
             this.gemPool = new ObjectPool(this.allocateGem, this.deallocateGem, this, this.engine.matrix.columns * this.engine.matrix.rows);
+
+            if (this.addMatrixMask) {
+                const bounds = this.engine.matrix.getBounds();
+                const maskShape = this.engine.gameScene.make.graphics();
+                maskShape.fillStyle(0xffffff, 1);
+                maskShape.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                this.gemContainer.mask = new Phaser.Display.Masks.GeometryMask(this.engine.gameScene, maskShape);
+            }
         },
 
     populateGemBoard:
@@ -26,7 +35,7 @@ const MatchThreeGemManager = new Phaser.Class({
                 for (var y = 0; y < this.engine.matrix.rows; ++y) {
                     this.activeGems[x].push(this.gemPool.take());
                     this.activeGems[x][y].awake({ column: x, row: y, type: this.getNewGemType(x, y, false) });
-                    this.engine.gameScene.children.add(this.activeGems[x][y]);
+                    this.gemContainer.add(this.activeGems[x][y]);
                 }
             }
         },
