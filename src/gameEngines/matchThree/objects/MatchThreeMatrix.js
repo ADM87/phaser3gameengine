@@ -1,7 +1,7 @@
 const MatchThreeMatrix = new Phaser.Class({
     initialize:
         function MatchThreeMatrix(engine, config) {
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.columns = config.columns || 0;
             this.rows = config.rows || 0;
             this.cellSize = config.cellSize || 0;
@@ -11,7 +11,7 @@ const MatchThreeMatrix = new Phaser.Class({
             for (var x = 0; x < this.columns; ++x) {
                 this.cells.push([]);
                 for (var y = 0; y < this.rows; ++y) {
-                    this.cells[x].push(this.engine.create("Cell", { 
+                    this.cells[x].push(this.matchThreeEngine.create("Cell", { 
                         x: this.position.x + x * this.cellSize, 
                         y: this.position.y + y * this.cellSize, 
                         column: x, 
@@ -80,7 +80,7 @@ const MatchThreeMatrix = new Phaser.Class({
 
     getActiveCell:
         function() {
-            const pos = this.toMatrix(this.engine.gameScene.input.mousePointer.x, this.engine.gameScene.input.mousePointer.y);
+            const pos = this.toMatrix(this.matchThreeEngine.gameScene.input.mousePointer.x, this.matchThreeEngine.gameScene.input.mousePointer.y);
             return this.getCell(pos.x, pos.y);
         },
 
@@ -91,7 +91,7 @@ const MatchThreeMatrix = new Phaser.Class({
 
     drawDebug:
         function() {
-            const graphics = this.engine.gameScene.add.graphics();
+            const graphics = this.matchThreeEngine.gameScene.add.graphics();
             this.cells.forEach(inner => { inner.forEach(cell => cell.drawDebug(graphics)); });
         }
 });

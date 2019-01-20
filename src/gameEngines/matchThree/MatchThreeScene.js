@@ -8,8 +8,8 @@ const MatchThreeScene = new Phaser.Class({
 
     preload:
         function() {
-            if (undefined !== this.engine.assetPacks) {
-                this.load.pack("main", this.engine.assetPacks);
+            if (undefined !== this.matchThreeEngine.assetPacks) {
+                this.load.pack("main", this.matchThreeEngine.assetPacks);
             }
             else {
                 throw new Error("[MatchThreeScene->Preload] Asset packs are undefined.");
@@ -18,8 +18,8 @@ const MatchThreeScene = new Phaser.Class({
 
     create:
         function() {
-            this.engine.initScene(this);
-            this.engine.drawDebug();
+            this.matchThreeEngine.initScene(this);
+            this.matchThreeEngine.drawDebug();
         }
 });
 

@@ -5,7 +5,7 @@ const MatchThreeCell = new Phaser.Class({
 
     initialize:
         function MatchThreeCell(engine, config) {
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.column = config.column || 0;
             this.row = config.row || 0;
             this.size = config.size || 0;
@@ -52,7 +52,7 @@ const MatchThreeCell = new Phaser.Class({
 
     isLocked:
         function() {
-            return this.locks !== this.engine.variables.Locks.None;
+            return this.locks !== this.matchThreeEngine.variables.Locks.None;
         },
 
     drawDebug:
@@ -71,9 +71,9 @@ const MatchThreeCell = new Phaser.Class({
             graphics.closePath();
             graphics.strokePath();
 
-            this.engine.gameScene.add.text(topLeft.x + 2, topLeft.y + 2, StringUtils.format("[%0,%1]", this.column, this.row), { fontSize: "8px" });
+            this.matchThreeEngine.gameScene.add.text(topLeft.x + 2, topLeft.y + 2, StringUtils.format("[%0,%1]", this.column, this.row), { fontSize: "8px" });
 
-            // const lockDisplay = this.engine.gameScene.add.graphics();
+            // const lockDisplay = this.matchThreeEngine.gameScene.add.graphics();
             // lockDisplay.lineStyle(2, 0xf10000, 0.5);
             // lockDisplay.fillStyle(0x0e0e0e, 0.5);
             // lockDisplay.beginPath();
@@ -84,7 +84,7 @@ const MatchThreeCell = new Phaser.Class({
             // lockDisplay.closePath();
             // lockDisplay.fillPath();
             // lockDisplay.strokePath();
-            // this.engine.game.events.on("step", () => lockDisplay.visible = this.locks !== 0);
+            // this.matchThreeEngine.game.events.on("step", () => lockDisplay.visible = this.locks !== 0);
         }
 });
 

@@ -6,7 +6,7 @@ const MatchThreeCascadeAction = new Phaser.Class({
     initialize:
         function MatchThreeCascadeAction(engine, data) {
             Action.call(this, data);
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.tweens = [];
 
             const sequenceDelay = engine.gems.cascadeConfig.sequenceDelay;
@@ -39,27 +39,27 @@ const MatchThreeCascadeAction = new Phaser.Class({
     destroy:
         function() {
             this.tweens = [];
-            this.engine = undefined;
+            this.matchThreeEngine = undefined;
             Action.prototype.destroy.call(this);
         },
 
     addTween:
         function(gem, delay = 0) {
-            const cell = this.engine.matrix.getCell(gem.column, gem.row);
+            const cell = this.matchThreeEngine.matrix.getCell(gem.column, gem.row);
             const cellPos = cell.getCenter();
             const delta = cellPos.y - gem.y;
-            const tween =this.engine.gameScene.tweens.add({
+            const tween =this.matchThreeEngine.gameScene.tweens.add({
                 targets: gem,
                 paused: true,
                 x: cellPos.x,
                 y: cellPos.y,
                 delay: delay,
-                duration: this.engine.gems.cascadeConfig.duration,
-                ease: this.engine.gems.cascadeConfig.ease,
+                duration: this.matchThreeEngine.gems.cascadeConfig.duration,
+                ease: this.matchThreeEngine.gems.cascadeConfig.ease,
                 onComplete: () => {
                     gem.cascadeAction = undefined;
                     this.tweens.splice(this.tweens.indexOf(tween), 1);
-                    cell.removeLock(this.engine.variables.Locks.Cascade);
+                    cell.removeLock(this.matchThreeEngine.variables.Locks.Cascade);
                 }
             })
             this.tweens.push(tween);

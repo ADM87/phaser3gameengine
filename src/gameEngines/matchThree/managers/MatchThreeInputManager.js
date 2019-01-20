@@ -1,10 +1,10 @@
 const MatchThreeInputManager = new Phaser.Class({
     initialize:
         function(engine) {
-            this.engine = engine;
+            this.matchThreeEngine = engine;
 
-            this.engine.gameScene.input.on("pointerdown", this.onPointerDown, this);
-            this.engine.gameScene.input.on("pointerup", this.onPointerUp, this);
+            this.matchThreeEngine.gameScene.input.on("pointerdown", this.onPointerDown, this);
+            this.matchThreeEngine.gameScene.input.on("pointerup", this.onPointerUp, this);
         },
 
     onPointerDown:
@@ -19,11 +19,11 @@ const MatchThreeInputManager = new Phaser.Class({
 
     processInput:
         function(t, dt) {
-            const cell = this.engine.matrix.getActiveCell();
-            if (undefined !== cell && !cell.isLocked() && this.engine.gems.isValid(cell.column, cell.row)) {
+            const cell = this.matchThreeEngine.matrix.getActiveCell();
+            if (undefined !== cell && !cell.isLocked() && this.matchThreeEngine.gems.isValid(cell.column, cell.row)) {
                 if (!cell.equals(this.activeCell)) {
-                    if (undefined !== this.activeCell && this.pointerIsDown && this.engine.matrix.isAdjacent(this.activeCell.column, this.activeCell.row, cell.column, cell.row)) {
-                        this.engine.gems.swapAt(this.activeCell.column, this.activeCell.row, cell.column, cell.row);
+                    if (undefined !== this.activeCell && this.pointerIsDown && this.matchThreeEngine.matrix.isAdjacent(this.activeCell.column, this.activeCell.row, cell.column, cell.row)) {
+                        this.matchThreeEngine.gems.swapAt(this.activeCell.column, this.activeCell.row, cell.column, cell.row);
 
                         this.pointerIsDown = false;
                         this.activeCell = undefined;
@@ -33,12 +33,12 @@ const MatchThreeInputManager = new Phaser.Class({
                     }
 
                     const pos = cell.getCenter();
-                    this.engine.selecter.show(pos.x, pos.y);
+                    this.matchThreeEngine.selecter.show(pos.x, pos.y);
                 }
             }
             else {
                 this.activeCell = undefined;
-                this.engine.selecter.hide();
+                this.matchThreeEngine.selecter.hide();
             }
         }
 });

@@ -6,7 +6,7 @@ const MatchThreeSwapAction = new Phaser.Class({
     initialize:
         function MatchThreeSwapAction(engine, data) {
             Action.call(this, data);
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.tweens = [];
 
             const gems = data.gems;
@@ -53,7 +53,7 @@ const MatchThreeSwapAction = new Phaser.Class({
     destroy:
         function() {
             this.tweens = [];
-            this.engine = undefined;
+            this.matchThreeEngine = undefined;
             Action.prototype.destroy.call(this);
         }
 });

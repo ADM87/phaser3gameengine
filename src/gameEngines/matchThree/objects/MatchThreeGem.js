@@ -5,11 +5,11 @@ const MatchThreeGem = new Phaser.Class({
 
     initialize:
         function MatchThreeGem(engine, config) {
-            this.engine = engine;
+            this.matchThreeEngine = engine;
 
             Phaser.GameObjects.Container.call(this, engine.gameScene);
 
-            this.image = this.engine.gameScene.add.image();
+            this.image = this.matchThreeEngine.gameScene.add.image();
             this.add(this.image);
         },
 
@@ -20,7 +20,7 @@ const MatchThreeGem = new Phaser.Class({
             this.assignType(config.type || this.type);
             this.setCell(config.column, config.row);
 
-            const pos = this.engine.matrix.getCell(this.column, this.row).getCenter();
+            const pos = this.matchThreeEngine.matrix.getCell(this.column, this.row).getCenter();
             this.setPosition(pos.x, pos.y);
         },
 

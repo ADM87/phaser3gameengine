@@ -64,7 +64,7 @@ const MatchThreeEngine = new Phaser.Class({
 MatchThreeEngine.PluginConfig = {
     key: "matchThree",
     plugin: MatchThreeEngine,
-    mapping: "engine",
+    mapping: "matchThreeEngine",
     start: true
 };
 

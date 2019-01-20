@@ -6,7 +6,7 @@ const MatchThreeMatchAction = new Phaser.Class({
     initialize:
         function MatchThreeMatchAction(engine, data) {
             Action.call(this, data);
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.tweens = [];
 
             const sequenceDelay = engine.gems.matchConfig.sequenceDelay;
@@ -52,20 +52,20 @@ const MatchThreeMatchAction = new Phaser.Class({
     destroy:
         function() {
             this.tweens = [];
-            this.engine = undefined;
+            this.matchThreeEngine = undefined;
             Action.prototype.destroy.call(this);
         },
 
     addTween:
         function(gem, delay = 0) {
-            const tween = this.engine.gameScene.tweens.add({
+            const tween = this.matchThreeEngine.gameScene.tweens.add({
                 targets: gem,
                 paused: true,
                 delay: delay,
                 scaleX: 0.001,
                 scaleY: 0.001,
-                duration: this.engine.gems.matchConfig.duration,
-                ease: this.engine.gems.matchConfig.ease,
+                duration: this.matchThreeEngine.gems.matchConfig.duration,
+                ease: this.matchThreeEngine.gems.matchConfig.ease,
                 onComplete: () => {
                     gem.matchAction = undefined;
                     this.tweens.splice(this.tweens.indexOf(tween), 1);

@@ -4,22 +4,22 @@ const ObjectPool = require("../../../engineCommon/utility/ObjectPool");
 const MatchThreeGemManager = new Phaser.Class({
     initialize:
         function MatchThreeGemManager(engine, config) {
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.config = config || {};
             this.types = Object.keys(this.config.types || {});
             this.swapConfig = config.swapConfig || {};
             this.matchConfig = config.matchConfig || {};
             this.cascadeConfig = config.cascadeConfig || {};
             this.addMatrixMask = config.addMatrixMask || false;
-            this.gemContainer = this.engine.gameScene.add.container();
-            this.gemPool = new ObjectPool(this.allocateGem, this.deallocateGem, this, this.engine.matrix.columns * this.engine.matrix.rows);
+            this.gemContainer = this.matchThreeEngine.gameScene.add.container();
+            this.gemPool = new ObjectPool(this.allocateGem, this.deallocateGem, this, this.matchThreeEngine.matrix.columns * this.matchThreeEngine.matrix.rows);
 
             if (this.addMatrixMask) {
-                const bounds = this.engine.matrix.getBounds();
-                const maskShape = this.engine.gameScene.make.graphics();
+                const bounds = this.matchThreeEngine.matrix.getBounds();
+                const maskShape = this.matchThreeEngine.gameScene.make.graphics();
                 maskShape.fillStyle(0xffffff, 1);
                 maskShape.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-                this.gemContainer.mask = new Phaser.Display.Masks.GeometryMask(this.engine.gameScene, maskShape);
+                this.gemContainer.mask = new Phaser.Display.Masks.GeometryMask(this.matchThreeEngine.gameScene, maskShape);
             }
         },
 
@@ -28,11 +28,11 @@ const MatchThreeGemManager = new Phaser.Class({
             this.activeGems = []; // Contains gem objects that are not cascading
             this.dropMap = []; // Contains gem objects that are going to cascade
             this.activeColumns = []; // Counters for the number of actions on a single column
-            for (var x = 0; x < this.engine.matrix.columns; ++x) {
+            for (var x = 0; x < this.matchThreeEngine.matrix.columns; ++x) {
                 this.activeGems.push([]);
                 this.dropMap.push([]);
                 this.activeColumns.push(0);
-                for (var y = 0; y < this.engine.matrix.rows; ++y) {
+                for (var y = 0; y < this.matchThreeEngine.matrix.rows; ++y) {
                     this.activeGems[x].push(this.gemPool.take());
                     this.activeGems[x][y].awake({ column: x, row: y, type: this.getNewGemType(x, y, false) });
                     this.gemContainer.add(this.activeGems[x][y]);
@@ -63,7 +63,7 @@ const MatchThreeGemManager = new Phaser.Class({
 
     swapAt:
         function(c1, r1, c2, r2, allowSwapBack = true) {
-            if (this.engine.matrix.isLocked(c1, r1) || this.engine.matrix.isLocked(c2, r2)) {
+            if (this.matchThreeEngine.matrix.isLocked(c1, r1) || this.matchThreeEngine.matrix.isLocked(c2, r2)) {
                 return;
             }
 
@@ -76,8 +76,8 @@ const MatchThreeGemManager = new Phaser.Class({
             this.activeGems[c2][r2] = gem1;
             this.activeGems[c1][r1] = gem2;
 
-            this.engine.matrix.addLock(c1, r1, this.engine.variables.Locks.Swap);
-            this.engine.matrix.addLock(c2, r2, this.engine.variables.Locks.Swap);
+            this.matchThreeEngine.matrix.addLock(c1, r1, this.matchThreeEngine.variables.Locks.Swap);
+            this.matchThreeEngine.matrix.addLock(c2, r2, this.matchThreeEngine.variables.Locks.Swap);
 
             this.activeColumns[c1]++;
             this.activeColumns[c2]++;
@@ -89,7 +89,7 @@ const MatchThreeGemManager = new Phaser.Class({
                     { gem: gem2, to: { column: c1, row: r1 } }
                 ]
             };
-            this.engine.actions.add(this.engine.create("SwapAction", swapData)).start().once("complete", this.swapComplete, this);
+            this.matchThreeEngine.actions.add(this.matchThreeEngine.create("SwapAction", swapData)).start().once("complete", this.swapComplete, this);
         },
 
     swapComplete:
@@ -100,8 +100,8 @@ const MatchThreeGemManager = new Phaser.Class({
             const hasMatch1 = this.hasMatch(gem1.column, gem1.row, gem1.type);
             const hasMatch2 = this.hasMatch(gem2.column, gem2.row, gem2.type);
 
-            this.engine.matrix.removeLock(gem1.column, gem1.row, this.engine.variables.Locks.Swap);
-            this.engine.matrix.removeLock(gem2.column, gem2.row, this.engine.variables.Locks.Swap);
+            this.matchThreeEngine.matrix.removeLock(gem1.column, gem1.row, this.matchThreeEngine.variables.Locks.Swap);
+            this.matchThreeEngine.matrix.removeLock(gem2.column, gem2.row, this.matchThreeEngine.variables.Locks.Swap);
 
             this.activeColumns[gem1.column]--;
             this.activeColumns[gem2.column]--;
@@ -142,7 +142,7 @@ const MatchThreeGemManager = new Phaser.Class({
                 bottomList.push(this.activeGems[column][y]);
             }
 
-            this.engine.matrix.addLock(gem.column, gem.row, this.engine.variables.Locks.Match);
+            this.matchThreeEngine.matrix.addLock(gem.column, gem.row, this.matchThreeEngine.variables.Locks.Match);
             this.dropMap[gem.column].push(gem);
             this.activeColumns[gem.column]++;
 
@@ -151,12 +151,12 @@ const MatchThreeGemManager = new Phaser.Class({
             }
             else {
                 leftList.forEach(matchGem => {
-                    this.engine.matrix.addLock(matchGem.column, matchGem.row, this.engine.variables.Locks.Match);
+                    this.matchThreeEngine.matrix.addLock(matchGem.column, matchGem.row, this.matchThreeEngine.variables.Locks.Match);
                     this.dropMap[matchGem.column].push(matchGem);
                     this.activeColumns[matchGem.column]++;
                 });
                 rightList.forEach(matchGem => {
-                    this.engine.matrix.addLock(matchGem.column, matchGem.row, this.engine.variables.Locks.Match);
+                    this.matchThreeEngine.matrix.addLock(matchGem.column, matchGem.row, this.matchThreeEngine.variables.Locks.Match);
                     this.dropMap[matchGem.column].push(matchGem);
                     this.activeColumns[matchGem.column]++;
                 });
@@ -166,12 +166,12 @@ const MatchThreeGemManager = new Phaser.Class({
             }
             else {
                 topList.forEach(matchGem => {
-                    this.engine.matrix.addLock(matchGem.column, matchGem.row, this.engine.variables.Locks.Match);
+                    this.matchThreeEngine.matrix.addLock(matchGem.column, matchGem.row, this.matchThreeEngine.variables.Locks.Match);
                     this.dropMap[matchGem.column].push(matchGem);
                     this.activeColumns[matchGem.column]++;
                 });
                 bottomList.forEach(matchGem => {
-                    this.engine.matrix.addLock(matchGem.column, matchGem.row, this.engine.variables.Locks.Match);
+                    this.matchThreeEngine.matrix.addLock(matchGem.column, matchGem.row, this.matchThreeEngine.variables.Locks.Match);
                     this.dropMap[matchGem.column].push(matchGem);
                     this.activeColumns[matchGem.column]++;
                 });
@@ -184,7 +184,7 @@ const MatchThreeGemManager = new Phaser.Class({
                 top: topList,
                 bottom: bottomList
             }
-            this.engine.actions.add(this.engine.create("MatchAction", matchData)).start().once("complete", this.matchComplete, this);
+            this.matchThreeEngine.actions.add(this.matchThreeEngine.create("MatchAction", matchData)).start().once("complete", this.matchComplete, this);
         },
 
     matchComplete:
@@ -208,7 +208,7 @@ const MatchThreeGemManager = new Phaser.Class({
             for (var i = 0; i < this.dropMap[column].length; ++i) {
                 bottom = Math.max(bottom, this.dropMap[column][i].row);
 
-                this.engine.matrix.removeLock(column, this.dropMap[column][i].row, this.engine.variables.Locks.Match);
+                this.matchThreeEngine.matrix.removeLock(column, this.dropMap[column][i].row, this.matchThreeEngine.variables.Locks.Match);
 
                 const index = this.activeGems[column].indexOf(this.dropMap[column][i]);
                 this.activeGems[column].splice(index, 1);
@@ -221,15 +221,15 @@ const MatchThreeGemManager = new Phaser.Class({
                     this.activeGems[column][row].cascadeAction.kill();
                 }
 
-                this.engine.matrix.addLock(column, row, this.engine.variables.Locks.Cascade);
+                this.matchThreeEngine.matrix.addLock(column, row, this.matchThreeEngine.variables.Locks.Cascade);
 
                 const index = this.dropMap[column].indexOf(this.activeGems[column][row]);
                 if (index >= 0) {
-                    const cell = this.engine.matrix.getCell(column, row);
+                    const cell = this.matchThreeEngine.matrix.getCell(column, row);
                     const cellPos = cell.getCenter();
-                    const dropPos = { x: cellPos.x, y: this.engine.matrix.position.y - (this.engine.matrix.cellSize * 0.5) };
+                    const dropPos = { x: cellPos.x, y: this.matchThreeEngine.matrix.position.y - (this.matchThreeEngine.matrix.cellSize * 0.5) };
 
-                    dropPos.y -= (bottom - this.dropMap[column][index].row) * this.engine.matrix.cellSize;
+                    dropPos.y -= (bottom - this.dropMap[column][index].row) * this.matchThreeEngine.matrix.cellSize;
 
                     this.activeGems[column][row].awake({ column: column, row: row });
                     this.activeGems[column][row].setPosition(dropPos.x, dropPos.y);
@@ -247,15 +247,15 @@ const MatchThreeGemManager = new Phaser.Class({
              const cascadeData = {
                 gems: cascadeList
              };
-            this.engine.actions.add(this.engine.create("CascadeAction", cascadeData)).start().once("complete", this.cascadeComplete, this);
+            this.matchThreeEngine.actions.add(this.matchThreeEngine.create("CascadeAction", cascadeData)).start().once("complete", this.cascadeComplete, this);
         },
 
     cascadeComplete:
         function(cascadeData) {
             const gems = cascadeData.gems;
             gems.forEach(gem => {
-                this.engine.matrix.removeLock(gem.column, gem.row, this.engine.variables.Locks.Cascade);
-                if (!this.engine.matrix.isLocked(gem.column, gem.row) && this.hasMatch(gem.column, gem.row, gem.type)) {
+                this.matchThreeEngine.matrix.removeLock(gem.column, gem.row, this.matchThreeEngine.variables.Locks.Cascade);
+                if (!this.matchThreeEngine.matrix.isLocked(gem.column, gem.row) && this.hasMatch(gem.column, gem.row, gem.type)) {
                     this.matchAt(gem.column, gem.row);
                 }
             });
@@ -276,12 +276,12 @@ const MatchThreeGemManager = new Phaser.Class({
 
     getActiveGem:
         function(column, row) {
-            return this.isValid(column, row) && !this.engine.matrix.isLocked(column, row) ? this.activeGems[column][row] : undefined;
+            return this.isValid(column, row) && !this.matchThreeEngine.matrix.isLocked(column, row) ? this.activeGems[column][row] : undefined;
         },
 
     checkAt:
         function(column, row, type) {
-            return this.isValid(column, row) && !this.engine.matrix.isLocked(column, row) && this.activeGems[column][row].type.key === type.key;
+            return this.isValid(column, row) && !this.matchThreeEngine.matrix.isLocked(column, row) && this.activeGems[column][row].type.key === type.key;
         },
 
     isValid:
@@ -292,7 +292,7 @@ const MatchThreeGemManager = new Phaser.Class({
     allocateGem:
         function() {
             // TODO - Other one time gem init stuff
-            return this.engine.create("Gem");
+            return this.matchThreeEngine.create("Gem");
         },
 
     deallocateGem:
@@ -302,7 +302,7 @@ const MatchThreeGemManager = new Phaser.Class({
 
     destroy:
         function() {
-            this.engine = undefined;
+            this.matchThreeEngine = undefined;
             this.config = undefined;
         }
 });

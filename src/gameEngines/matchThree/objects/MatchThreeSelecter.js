@@ -4,13 +4,13 @@ const MatchThreeSelecter = new Phaser.Class({
     initialize:
         function MatchThreeSelecter(engine, config) {
             Phaser.GameObjects.Container.call(this, engine.gameScene);
-            this.engine = engine;
+            this.matchThreeEngine = engine;
             this.config = config;
 
             const size = config.size || 0;
             const half = size / 2
 
-            const graphics = this.engine.gameScene.add.graphics();
+            const graphics = this.matchThreeEngine.gameScene.add.graphics();
             graphics.lineStyle(2, config.idleColor, 1);
             graphics.strokeRect(-half, -half, size, size);
             this.add(graphics);
