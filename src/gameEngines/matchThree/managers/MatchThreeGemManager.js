@@ -19,7 +19,7 @@ const MatchThreeGemManager = new Phaser.Class({
                 const maskShape = this.matchThreeEngine.gameScene.make.graphics();
                 maskShape.fillStyle(0xffffff, 1);
                 maskShape.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-                this.gemContainer.mask = new Phaser.Display.Masks.GeometryMask(this.matchThreeEngine.gameScene, maskShape);
+                this.gemContainer.setMask(new Phaser.Display.Masks.GeometryMask(this.matchThreeEngine.gameScene, maskShape));
             }
         },
 
