@@ -6,8 +6,8 @@
  */
 const MatchThree = {
     Engine: require("./MatchThreeEngine"),
-    GameScene: require("./MatchThreeScene"),
     ClassDefinitions: {
+        GameScene: require("./MatchThreeScene"),
         Matrix: require("./objects/MatchThreeMatrix"),
         Cell: require("./objects/MatchThreeCell"),
         Selecter: require("./objects/MatchThreeSelecter"),

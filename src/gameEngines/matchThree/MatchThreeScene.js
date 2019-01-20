@@ -19,6 +19,7 @@ const MatchThreeScene = new Phaser.Class({
     create:
         function() {
             this.matchThreeEngine.initScene(this);
+            this.matchThreeEngine.gems.populateGemBoard();
             this.matchThreeEngine.drawDebug();
         }
 });

@@ -73,18 +73,18 @@ const MatchThreeCell = new Phaser.Class({
 
             this.matchThreeEngine.gameScene.add.text(topLeft.x + 2, topLeft.y + 2, StringUtils.format("[%0,%1]", this.column, this.row), { fontSize: "8px" });
 
-            // const lockDisplay = this.matchThreeEngine.gameScene.add.graphics();
-            // lockDisplay.lineStyle(2, 0xf10000, 0.5);
-            // lockDisplay.fillStyle(0x0e0e0e, 0.5);
-            // lockDisplay.beginPath();
-            // lockDisplay.moveTo(topLeft.x + 10, topLeft.y + 10);
-            // lockDisplay.lineTo(topRight.x - 10, topRight.y + 10);
-            // lockDisplay.lineTo(bottomRight.x - 10, bottomRight.y - 10);
-            // lockDisplay.lineTo(bottomLeft.x + 10, bottomLeft.y - 10);
-            // lockDisplay.closePath();
-            // lockDisplay.fillPath();
-            // lockDisplay.strokePath();
-            // this.matchThreeEngine.game.events.on("step", () => lockDisplay.visible = this.locks !== 0);
+            const lockDisplay = this.matchThreeEngine.gameScene.add.graphics();
+            lockDisplay.lineStyle(2, 0xf10000, 0.5);
+            lockDisplay.fillStyle(0x0e0e0e, 0.5);
+            lockDisplay.beginPath();
+            lockDisplay.moveTo(topLeft.x + 10, topLeft.y + 10);
+            lockDisplay.lineTo(topRight.x - 10, topRight.y + 10);
+            lockDisplay.lineTo(bottomRight.x - 10, bottomRight.y - 10);
+            lockDisplay.lineTo(bottomLeft.x + 10, bottomLeft.y - 10);
+            lockDisplay.closePath();
+            lockDisplay.fillPath();
+            lockDisplay.strokePath();
+            this.matchThreeEngine.game.events.on("step", () => lockDisplay.visible = this.locks !== 0);
         }
 });
 

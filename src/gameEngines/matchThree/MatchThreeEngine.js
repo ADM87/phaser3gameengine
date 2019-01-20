@@ -29,7 +29,6 @@ const MatchThreeEngine = new Phaser.Class({
                 this.selecter = this.create("Selecter");
 
                 this.gameScene.children.add(this.selecter);
-                this.gems.populateGemBoard();
 
                 this.game.events.on("step", this.update, this);
             }

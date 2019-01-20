@@ -42,9 +42,11 @@ const MatchThreeGemManager = new Phaser.Class({
 
     processGemBoard:
         function(t, dt) {
-            for (var column = 0; column < this.activeColumns.length; ++column) {
-                if (this.activeColumns[column] === 0 && this.dropMap[column].length > 0) {
-                    this.cascade(column);
+            if (undefined !== this.activeGems) {
+                for (var column = 0; column < this.activeColumns.length; ++column) {
+                    if (this.activeColumns[column] === 0 && this.dropMap[column].length > 0) {
+                        this.cascade(column);
+                    }
                 }
             }
         },
@@ -286,7 +288,10 @@ const MatchThreeGemManager = new Phaser.Class({
 
     isValid:
         function(column, row) {
-            return column >= 0 && column < this.activeGems.length && row >= 0 && row < this.activeGems[column].length && undefined !== this.activeGems[column][row];
+            if (undefined !== this.activeGems) {
+                return column >= 0 && column < this.activeGems.length && row >= 0 && row < this.activeGems[column].length && undefined !== this.activeGems[column][row];
+            }
+            return false;
         },
 
     allocateGem:
