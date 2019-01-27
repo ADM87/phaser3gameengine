@@ -19,7 +19,7 @@ const MatchThree = {
         CascadeAction: require("./actions/MatchThreeCascadeAction")
     },
     Variables: {
-        ConfigKey: "gameConfig",
+        ConfigKey: "matchThreeConfig",
         Locks: {
             None: 0,
             Swap: 1 << 0,

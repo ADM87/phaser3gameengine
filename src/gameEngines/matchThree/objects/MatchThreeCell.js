@@ -71,7 +71,7 @@ const MatchThreeCell = new Phaser.Class({
             graphics.closePath();
             graphics.strokePath();
 
-            this.matchThreeEngine.gameScene.add.text(topLeft.x + 2, topLeft.y + 2, StringUtils.format("[%0,%1]", this.column, this.row), { fontSize: "8px" });
+            this.matchThreeEngine.gameScene.add.text(topLeft.x + 2, topLeft.y + 2, StringUtils.format("[%0,%1]", this.column, this.row), { fontSize: "24px" });
 
             const lockDisplay = this.matchThreeEngine.gameScene.add.graphics();
             lockDisplay.lineStyle(2, 0xf10000, 0.5);
