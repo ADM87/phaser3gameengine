@@ -2,6 +2,8 @@ const MatchThreeMatrix = new Phaser.Class({
     initialize:
         function MatchThreeMatrix(engine, config) {
             this.matchThreeEngine = engine;
+            this.input = engine.gameScene.input;
+            this.camera = engine.gameScene.cameras.main;
             this.columns = config.columns || 0;
             this.rows = config.rows || 0;
             this.cellSize = config.cellSize || 0;
@@ -80,7 +82,8 @@ const MatchThreeMatrix = new Phaser.Class({
 
     getActiveCell:
         function() {
-            const pos = this.toMatrix(this.matchThreeEngine.gameScene.input.mousePointer.x, this.matchThreeEngine.gameScene.input.mousePointer.y);
+            const worldPoint = this.camera.getWorldPoint(this.input.mousePointer.x, this.input.mousePointer.y);
+            const pos = this.toMatrix(worldPoint.x, worldPoint.y);
             return this.getCell(pos.x, pos.y);
         },
 

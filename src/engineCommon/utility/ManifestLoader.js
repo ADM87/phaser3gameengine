@@ -13,16 +13,14 @@ const ManifestLoader = new Phaser.Class({
             if (json.hasOwnProperty(pack)) {
                 const files = json[pack].files || [];
                 files.forEach(file => {
-                    const type = file.type;
-                    switch (type) {
+                    switch (file.type) {
                         case "image":
                         case "json":
-                            loader[type].call(loader, file.key, file.url);
+                            loader[file.type].call(loader, file.key, file.url);
                             break;
 
                         default:
-                            throw new Error(StringUtils.format("[ManifestLoader->load] Load condition for %0 not implmeneted.", type));
-                            break;
+                            throw new Error(StringUtils.format("[ManifestLoader->load] Load condition for %0 not implmeneted.", file.type));
                     }
                 });
             }
