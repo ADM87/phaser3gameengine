@@ -235,6 +235,8 @@ const MatchThreeGemManager = new Phaser.Class({
 
                     this.activeGems[column][row].awake({ column: column, row: row });
                     this.activeGems[column][row].setPosition(dropPos.x, dropPos.y);
+
+                    this.gemContainer.moveTo(this.activeGems[column][row], 0);
                 }
                 else {
                     this.activeGems[column][row].setCell(column, row);

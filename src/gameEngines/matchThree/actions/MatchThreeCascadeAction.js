@@ -12,7 +12,7 @@ const MatchThreeCascadeAction = new Phaser.Class({
             const sequenceDelay = engine.gems.cascadeConfig.sequenceDelay;
 
             for (var i = 0; i < data.gems.length; ++i) {
-                this.addTween(data.gems[i], sequenceDelay + sequenceDelay * i);
+                this.addTween(data.gems[i], sequenceDelay * i);
                 data.gems[i].cascadeAction = this;
             }
         },
