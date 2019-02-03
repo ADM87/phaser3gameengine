@@ -47,8 +47,7 @@ const MatchThreeCascadeAction = new Phaser.Class({
         function(gem, delay = 0) {
             const cell = this.matchThreeEngine.matrix.getCell(gem.column, gem.row);
             const cellPos = cell.getCenter();
-            const delta = cellPos.y - gem.y;
-            const tween =this.matchThreeEngine.gameScene.tweens.add({
+            const tween = this.matchThreeEngine.gameScene.tweens.add({
                 targets: gem,
                 paused: true,
                 x: cellPos.x,
@@ -64,6 +63,6 @@ const MatchThreeCascadeAction = new Phaser.Class({
             })
             this.tweens.push(tween);
         }
-})
+});
 
 module.exports = MatchThreeCascadeAction;
