@@ -34,6 +34,10 @@ const ManifestLoader = new Phaser.Class({
                                 loader[file.type].call(loader, file.key, file.url);
                                 break;
 
+                            case "atlas":
+                                loader[file.type].call(loader, file.key, file.textureUrl, file.atlasUrl);
+                                break;
+
                             case "bitmapFont":
                                 loader[file.type].call(loader, file.key, file.textureUrl, file.fontDataUrl);
                                 break;

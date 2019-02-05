@@ -32,7 +32,6 @@ const MatchThreeEngine = new Phaser.Class({
 
                 this.game.events.on("step", this.update, this);
             }
-            console.log(this);
         },
 
     update:

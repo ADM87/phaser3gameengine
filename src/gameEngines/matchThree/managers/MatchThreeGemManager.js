@@ -2,8 +2,12 @@ const StringUtils = require("../../../engineCommon/utility/StringUtils");
 const ObjectPool = require("../../../engineCommon/utility/ObjectPool");
 
 const MatchThreeGemManager = new Phaser.Class({
+    Extends: Phaser.Events.EventEmitter,
+
     initialize:
         function MatchThreeGemManager(engine, config) {
+            Phaser.Events.EventEmitter.call(this);
+
             this.matchThreeEngine = engine;
             this.config = config || {};
             this.types = Object.keys(this.config.types || {});
@@ -285,7 +289,7 @@ const MatchThreeGemManager = new Phaser.Class({
 
     checkAt:
         function(column, row, type) {
-            return this.isValid(column, row) && !this.matchThreeEngine.matrix.isLocked(column, row) && this.activeGems[column][row].type.key === type.key;
+            return this.isValid(column, row) && !this.matchThreeEngine.matrix.isLocked(column, row) && this.activeGems[column][row].type.id === type.id;
         },
 
     isValid:
