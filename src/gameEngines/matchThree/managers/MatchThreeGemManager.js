@@ -96,6 +96,7 @@ const MatchThreeGemManager = new Phaser.Class({
                 ]
             };
             this.matchThreeEngine.actions.add(this.matchThreeEngine.create("SwapAction", swapData)).start().once("complete", this.swapComplete, this);
+            this.matchThreeEngine.events.emit("swapBegin", swapData);
         },
 
     swapComplete:
@@ -125,6 +126,8 @@ const MatchThreeGemManager = new Phaser.Class({
                     this.matchAt(gem2.column, gem2.row);
                 }
             }
+
+            this.matchThreeEngine.events.emit("swapComplete", swapData);
         },
 
     matchAt:
@@ -190,7 +193,8 @@ const MatchThreeGemManager = new Phaser.Class({
                 top: topList,
                 bottom: bottomList
             }
-            this.matchThreeEngine.actions.add(this.matchThreeEngine.create("MatchAction", matchData)).start().once("complete", this.matchComplete, this);
+            this.matchThreeEngine.actions.add(this.matchThreeEngine.create("MatchAction", matchData)).start().once("complete", this.matchComplete, this);            
+            this.matchThreeEngine.events.emit("matchBegin", matchData);
         },
 
     matchComplete:
@@ -202,6 +206,8 @@ const MatchThreeGemManager = new Phaser.Class({
             matchData.right.forEach(matchGem => this.activeColumns[matchGem.column]--);
             matchData.top.forEach(matchGem => this.activeColumns[matchGem.column]--);
             matchData.bottom.forEach(matchGem => this.activeColumns[matchGem.column]--);
+
+            this.matchThreeEngine.events.emit("matchComplete", matchData);
         },
 
     cascade:
@@ -256,6 +262,7 @@ const MatchThreeGemManager = new Phaser.Class({
                 gems: cascadeList
              };
             this.matchThreeEngine.actions.add(this.matchThreeEngine.create("CascadeAction", cascadeData)).start().once("complete", this.cascadeComplete, this);
+            this.matchThreeEngine.events.emit("cascadeBegin", cascadeData);
         },
 
     cascadeComplete:
@@ -267,6 +274,7 @@ const MatchThreeGemManager = new Phaser.Class({
                     this.matchAt(gem.column, gem.row);
                 }
             });
+            this.matchThreeEngine.events.emit("cascadeComplete", cascadeData);
         },
 
     hasMatch:

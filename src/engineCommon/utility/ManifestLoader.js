@@ -59,12 +59,44 @@ const ManifestLoader = new Phaser.Class({
 
     unload:
         function(loader, packs) {
-            if (this.manifest.hasOwnProperty(pack)) {
-                throw new Error(StringUtils.format("[ManifestLoader->unload] Not implemented"));
+            if (!Array.isArray(packs)) {
+                packs = [packs];
             }
-            else {
-                throw new Error(StringUtils.format("[ManifestLoader->load] Cannot find pack %0 in manifest JSON.", pack));
-            }
+            packs.forEach(pack => {
+                if (this.manifest.hasOwnProperty(pack)) {
+                    const files = this.manifest[pack].files || [];
+                    files.forEach(file => {
+                        switch (file.type) {
+                            case "image":
+                                this.game.textures.get(file.key).destroy();
+                                this.game.textures.remove(file.key);
+                                break;
+
+                            case "json":
+                                throw new Error("Not Implemented");
+                                break;
+
+                            case "tilemapTiledJSON":
+                                this.game.cache.tilemap.remove(file.key);
+                                break;
+
+                            case "atlas":
+                                throw new Error("Not Implemented");
+                                break;
+
+                            case "bitmapFont":
+                                throw new Error("Not Implemented");
+                                break;
+                                
+                            default:
+                                throw new Error(StringUtils.format("[ManifestLoader->load] Load condition for %0 not implmeneted.", file.type));
+                        }
+                    });
+                }
+                else {
+                    throw new Error(StringUtils.format("[ManifestLoader->load] Cannot find pack %0 in manifest JSON.", pack));
+                }
+            });
         }
 });
 

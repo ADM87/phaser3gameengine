@@ -11,23 +11,28 @@ const MatchThreeMatchAction = new Phaser.Class({
 
             const sequenceDelay = engine.gems.matchConfig.sequenceDelay;
 
+            const length = Math.max(data.left.length, data.right.length, data.top.length, data.bottom.length);
+            for (var i = 0; i < length; ++i) {
+                const targets = []
+                if (i < data.left.length) {
+                    targets.push(data.left[i]);
+                    data.left[i].cascadeAction = this;
+                }
+                if (i < data.right.length) {
+                    targets.push(data.right[i]);
+                    data.right[i].cascadeAction = this;
+                }
+                if (i < data.top.length) {
+                    targets.push(data.top[i]);
+                    data.top[i].cascadeAction = this;
+                }
+                if (i < data.bottom.length) {
+                    targets.push(data.bottom[i]);
+                    data.bottom[i].cascadeAction = this;
+                }
+                this.addTween(targets, sequenceDelay + sequenceDelay * i);
+            }
             this.addTween(data.src);
-            for (var i = 0; i < data.left.length; ++i) {
-                this.addTween(data.left[i], sequenceDelay + sequenceDelay * i);
-                data.left[i].matchAction = this;
-            }
-            for (var i = 0; i < data.right.length; ++i) {
-                this.addTween(data.right[i], sequenceDelay + sequenceDelay * i);
-                data.right[i].matchAction = this;
-            }
-            for (var i = 0; i < data.top.length; ++i) {
-                this.addTween(data.top[i], sequenceDelay + sequenceDelay * i);
-                data.top[i].matchAction = this;
-            }
-            for (var i = 0; i < data.bottom.length; ++i) {
-                this.addTween(data.bottom[i], sequenceDelay + sequenceDelay * i);
-                data.bottom[i].matchAction = this;
-            }
         },
 
     start:
@@ -57,9 +62,12 @@ const MatchThreeMatchAction = new Phaser.Class({
         },
 
     addTween:
-        function(gem, delay = 0) {
+        function(gems, delay = 0) {
+            if (!Array.isArray(gems)) {
+                gems = [gems];
+            }
             const tween = this.matchThreeEngine.gameScene.tweens.add({
-                targets: gem,
+                targets: gems,
                 paused: true,
                 delay: delay,
                 scaleX: 0.001,
@@ -67,8 +75,9 @@ const MatchThreeMatchAction = new Phaser.Class({
                 duration: this.matchThreeEngine.gems.matchConfig.duration,
                 ease: this.matchThreeEngine.gems.matchConfig.ease,
                 onComplete: () => {
-                    gem.matchAction = undefined;
+                    gems.forEach(gem => gem.matchAction = undefined);
                     this.tweens.splice(this.tweens.indexOf(tween), 1);
+                    this.matchThreeEngine.events.emit("gemMatchComplete", gems);
                 }
             });
             this.tweens.push(tween);

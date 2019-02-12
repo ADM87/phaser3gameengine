@@ -20,6 +20,7 @@ const MatchThreeEngine = new Phaser.Class({
             if (undefined !== scene) {
                 this.game = scene.game;
                 this.gameScene = scene;
+                this.events = this.game.events;
 
                 this.config = scene.cache.json.get(this.variables.ConfigKey);
 
@@ -32,6 +33,7 @@ const MatchThreeEngine = new Phaser.Class({
 
                 this.game.events.on("step", this.update, this);
             }
+            console.log(this);
         },
 
     update:
